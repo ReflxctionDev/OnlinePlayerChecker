@@ -1,0 +1,16 @@
+[
+{
+  "modid": "onlineplayerchecker",
+  "name": "OnlinePlayerChecker",
+  "description": "A very simple Hypixel mod for checking whether a player is online or not in Hypixel.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://www.github.com/ReflxctionDev/OnlinePlayerChecker",
+  "updateUrl": "",
+  "authorList": ["Reflxction"],
+  "credits": "Reflxction",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
