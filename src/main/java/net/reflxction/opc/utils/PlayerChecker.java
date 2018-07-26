@@ -23,6 +23,7 @@ import net.reflxction.opc.KeyNotSetException;
 import net.reflxction.opc.OnlinePlayerChecker;
 
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * A utility for doing simple checks related to players
@@ -56,9 +57,10 @@ public class PlayerChecker {
      *
      * @param name Player name to check
      * @return True if the given player is online, false if otherwise
-     * @throws KeyNotSetException If the player hasn't set a key beforehand
+     * @throws KeyNotSetException     If the player hasn't set a key beforehand
+     * @throws InvalidPlayerException If the given player isn't available
      */
-    public boolean isOnline(String name) throws KeyNotSetException {
+    public boolean isOnline(String name) throws KeyNotSetException, InvalidPlayerException {
         HypixelAPI api = new HypixelAPI(OnlinePlayerChecker.getSettings().getApiKey());
         try {
             HypixelPlayer player = api.getPlayer(name);
@@ -67,9 +69,29 @@ public class PlayerChecker {
             throw new KeyNotSetException();
         } catch (IOException e) {
             SimpleSender.send("&cThere are issues with the Hypixel API, thus it couldn't be determined if the player is available or not!");
-        } catch (InvalidPlayerException e) {
-            SimpleSender.send("&cThis player has never played here or is not available!");
         }
         return false;
     }
+
+    /**
+     * Returns a string containing the last login of the given player, in the format MM/DD/YYYY
+     *
+     * @param name Player to check for
+     * @return A string of the last login of the player
+     * @throws KeyNotSetException     If the player hasn't set a key beforehand
+     * @throws InvalidPlayerException If the given player is invalid
+     */
+    public String getLastLoginDate(String name) throws KeyNotSetException, InvalidPlayerException {
+        HypixelAPI api = new HypixelAPI(OnlinePlayerChecker.getSettings().getApiKey());
+        try {
+            HypixelPlayer player = api.getPlayer(name);
+            return StringUtils.convertDate(new Date(player.getLastLogin()));
+        } catch (APIException e) {
+            throw new KeyNotSetException();
+        } catch (IOException e) {
+            SimpleSender.send("&cThere are issues with the Hypixel API, thus it couldn't be determined if the player is available or not!");
+        }
+        return null;
+    }
+
 }

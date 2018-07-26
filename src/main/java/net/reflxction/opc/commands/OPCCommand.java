@@ -15,6 +15,7 @@
  */
 package net.reflxction.opc.commands;
 
+import me.kbrewster.exceptions.InvalidPlayerException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
@@ -72,9 +73,11 @@ public class OPCCommand implements ICommand {
             case 1:
                 new Multithreading<>().schedule((foo) -> {
                     try {
-                        SimpleSender.send(checker.isOnline(args[0]) ? "&e" + args[0] + "&a is online!" : "&e" + args[0] + " &cis not online!");
+                        SimpleSender.send(checker.isOnline(args[0]) ? "&e" + args[0] + "&a is online!" : "&e" + args[0] + " &cis not online! Last login: &b" + checker.getLastLoginDate(args[0]));
                     } catch (KeyNotSetException e) {
                         SimpleSender.send("&cYou haven't set your API key yet! Do so with /api new (and it will be set automatically)");
+                    } catch (InvalidPlayerException e) {
+                        SimpleSender.send("&cThis player has &cnever &cplayed &chere &cor &cis &cnot &cavailable!");
                     }
                 });
                 break;
